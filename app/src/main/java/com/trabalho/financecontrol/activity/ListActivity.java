@@ -1,14 +1,16 @@
-package com.trabalho.financecontrol;
+package com.trabalho.financecontrol.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SearchActivity extends AppCompatActivity {
+import com.trabalho.financecontrol.R;
+
+public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_list);
     }
 }

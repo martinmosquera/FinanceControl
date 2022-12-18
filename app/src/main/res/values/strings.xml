@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Finance Control</string>
+    <string name="app_name_1">Finance</string>
+    <string name="app_name_2">Control</string>
+    <string name="operation">Cadastro de Operações</string>
+    <string name="search">Pesquisar</string>
+    <string name="list">Lista Classificada</string>
+    <string name="extract">Extrato</string>
+    <string name="exit">Sair</string>
 </resources>

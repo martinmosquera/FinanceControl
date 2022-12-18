@@ -4,15 +4,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/yellow"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
 
     <TextView
+        android:id="@+id/FinanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/app_name_1"
+        android:textColor="@color/dark_brown"
+        android:textSize="50sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ControlViewText"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="82dp"
+        android:layout_marginBottom="62dp"
+        android:fontFamily="cursive"
+        android:text="@string/app_name_2"
+        android:textColor="@color/brown"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/OperationButton"
+        app:layout_constraintEnd_toEndOf="@+id/FinanceTextView"
+        app:layout_constraintStart_toEndOf="@+id/FinanceTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OperationButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="14dp"
+        android:background="@color/brown"
+        android:onClick="operation"
+        android:padding="15dp"
+        android:text="@string/operation"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/SearchButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ControlViewText"
+        tools:ignore="UsingOnClickInXml" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/SearchButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="14dp"
+        android:background="@color/brown"
+        android:onClick="search"
+        android:padding="20dp"
+        android:text="@string/search"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ExtractButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OperationButton"
+        tools:ignore="UsingOnClickInXml" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ExtractButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="11dp"
+        android:background="@color/brown"
+        android:onClick="extract"
+        android:padding="20dp"
+        android:text="@string/extract"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ListButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SearchButton"
+        tools:ignore="UsingOnClickInXml" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ListButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="170dp"
+        android:background="@color/brown"
+        android:onClick="list"
+        android:padding="20dp"
+        android:text="@string/list"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ExitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExtractButton"
+        tools:ignore="UsingOnClickInXml" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ExitButton"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/brown"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="exit"
+        android:padding="20dp"
+        android:text="@string/exit"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ListButton"
+        tools:ignore="UsingOnClickInXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
