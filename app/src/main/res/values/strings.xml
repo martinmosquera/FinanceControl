@@ -7,4 +7,10 @@
     <string name="list">Lista Classificada</string>
     <string name="extract">Extrato</string>
     <string name="exit">Sair</string>
+    <string name="image_icon">Logo</string>
+    <string name="categories">Categoria da Operação:</string>
+    <string name="value">Valor: R$</string>
+    <string name="date">Selecione a Data</string>
+    <string name="back">Voltar</string>
+    <string name="register">Cadastrar</string>
 </resources>
