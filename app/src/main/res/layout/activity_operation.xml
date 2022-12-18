@@ -41,10 +41,9 @@
         android:id="@+id/CategoriesSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="42dp"
         app:layout_constraintBottom_toTopOf="@+id/LabelValueTextView"
         app:layout_constraintEnd_toEndOf="@+id/TitleTextView"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/LabelValueTextView"
         app:layout_constraintTop_toBottomOf="@+id/LabelSpinnerTextView"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -69,27 +68,29 @@
         android:id="@+id/ValueEditText"
         android:layout_width="0dp"
         android:layout_height="53dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="113dp"
         android:layout_marginEnd="116dp"
+        android:layout_marginBottom="116dp"
         android:ems="10"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/DatePickButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/LabelValueTextView"
-        app:layout_constraintTop_toBottomOf="@+id/CategoriesSpinner"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toTopOf="@+id/LabelSpinnerTextView"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/DatePickButton"
         android:layout_width="191dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="237dp"
+        android:layout_marginBottom="26dp"
         android:background="@color/brown"
         android:onClick="datePicker"
         android:text="@string/date"
         android:textColor="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/RegisterButton"
+        app:layout_constraintBottom_toTopOf="@+id/DateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LabelValueTextView"
         tools:ignore="UsingOnClickInXml" />
@@ -98,11 +99,12 @@
         android:id="@+id/DateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginBottom="184dp"
         android:textColor="@color/dark_brown"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/DatePickButton"
-        app:layout_constraintStart_toStartOf="@+id/DatePickButton"
+        app:layout_constraintBottom_toTopOf="@+id/RegisterButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DatePickButton" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -137,7 +139,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/BackButton"
-        app:layout_constraintTop_toBottomOf="@+id/DatePickButton"
+        app:layout_constraintTop_toBottomOf="@+id/DateTextView"
         tools:ignore="UsingOnClickInXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
