@@ -8,7 +8,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static int DB_VERSION = 1;
-    public static String DB_NAME = "FINANCE.DB";
+    public static String DB_NAME = "FINANCES.DB";
     public static String TABLE1_NAME = "tipo";
     public static String TABLE2_NAME = "operacao";
 
@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_SQL_TABLE1 = "CREATE TABLE IF NOT EXISTS "+TABLE1_NAME+"(id integer primary key autoincrement, name text not null,categoria text not null);";
-        String CREATE_SQL_TABLE2 = "CREATE TABLE IF NOT EXISTS "+TABLE2_NAME+"(id integer primary key autoincrement, tipo integer not null,data date default CURRENT_TIME, valor text not null);";
+        String CREATE_SQL_TABLE2 = "CREATE TABLE IF NOT EXISTS "+TABLE2_NAME+"(id integer primary key autoincrement, tipo integer not null,data text not null, valor text not null,categoria text not null);";
         try{
             sqLiteDatabase.execSQL(CREATE_SQL_TABLE1);
             Log.i("INFO_DB","Tabela tipo Criada com sucesso");

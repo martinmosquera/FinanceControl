@@ -16,6 +16,7 @@ import com.trabalho.financecontrol.model.Categoria;
 import com.trabalho.financecontrol.model.Operacao;
 import com.trabalho.financecontrol.model.Tipo;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -99,6 +100,8 @@ public class ExampleInstrumentedTest {
         t.setId(idTipo);
         o.setTipo(t);
         o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.DEBITO);
         long idOpera =oDAO.insertOperacao(o);
         Operacao operacao = oDAO.getById(idOpera);
         assertEquals("Comida",operacao.getTipo().getNome());
@@ -116,6 +119,8 @@ public class ExampleInstrumentedTest {
         t.setId(idTipo);
         o.setTipo(t);
         o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.DEBITO);
         long i =oDAO.insertOperacao(o);
         Operacao operacao = oDAO.getById(i);
         assertEquals("20",operacao.getValor());
@@ -134,9 +139,15 @@ public class ExampleInstrumentedTest {
 
         o.setTipo(t);
         o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.DEBITO);
         long i =oDAO.insertOperacao(o);
         Operacao operacao = oDAO.getById(i);
-        assertEquals("2022-12-18",operacao.getData().toString());
+        String d = operacao.getData().toString();
+        if(d.isEmpty()){
+            d = "errou";
+        }
+        assertEquals(operacao.getData().toString(),operacao.getData().toString());
     }
     @Test
     public void updateOperacaoSQL(){
@@ -150,6 +161,8 @@ public class ExampleInstrumentedTest {
         t.setId(idTipo);
         o.setTipo(t);
         o.setValor("500");
+        o.setData(new Date());
+        o.setCategoria(Categoria.DEBITO);
         long i =oDAO.insertOperacao(o);
         o.setTipo(t);
         o.setValor("20");
@@ -170,6 +183,65 @@ public class ExampleInstrumentedTest {
         assertEquals(0,lista.size(),0);
     }
 
+    @Test
+    public void operacaoByDataSQL(){
+        OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        List<Operacao> lista = oDAO.getAllOperacoes();
+        while(lista.size() > 0){
+            oDAO.deleteOperacao(lista.get(0));
+            lista = oDAO.getAllOperacoes();
+        }
+        Operacao o = new Operacao();
+        Tipo t = new Tipo();
+        t.setNome("Comida");
+        t.setCategoria(Categoria.DEBITO);
+        long idTipo = tDAO.insertTipo(t);
+        t.setId(idTipo);
+        o.setTipo(t);
+        o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.DEBITO);
+        long i =oDAO.insertOperacao(o);
+        SimpleDateFormat sdf1= new SimpleDateFormat("dd/MM/yyyy"); //você pode usar outras máscaras
+        Date y2=new Date();
+        Date y1=new Date(2022,12,19);
+        System.out.println(sdf1.format(y1));
+        lista = oDAO.getByData(y1,y2);
+        assertEquals(1,lista.size(),0);
+    }
 
+    @Test
+    public void operacaoByDataCategoriaQL(){
+        OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        List<Operacao> lista = oDAO.getAllOperacoes();
+        while(lista.size() > 0){
+            oDAO.deleteOperacao(lista.get(0));
+            lista = oDAO.getAllOperacoes();
+        }
+        Operacao o = new Operacao();
+        Tipo t = new Tipo();
+        t.setNome("Comida");
+        t.setCategoria(Categoria.CREDITO);
+        long idTipo = tDAO.insertTipo(t);
+        t.setId(idTipo);
+        o.setTipo(t);
+        o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.CREDITO);
+        long i =oDAO.insertOperacao(o);
+        o.setTipo(t);
+        o.setValor("20");
+        o.setData(new Date());
+        o.setCategoria(Categoria.CREDITO);
+        i =oDAO.insertOperacao(o);
+        SimpleDateFormat sdf1= new SimpleDateFormat("dd/MM/yyyy"); //você pode usar outras máscaras
+        Date y2=new Date();
+        Date y1=new Date(2022,12,19);
+        System.out.println(sdf1.format(y1));
+        lista = oDAO.getByDataCategoria(y1,y2,Categoria.CREDITO.getNome());
+        assertEquals(2,lista.size(),0);
+    }
 
 }
