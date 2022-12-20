@@ -9,8 +9,12 @@
     <string name="exit">Sair</string>
     <string name="image_icon">Logo</string>
     <string name="categories">Categoria da Operação:</string>
+    <string name="operations">Operação:</string>
     <string name="value">Valor: R$</string>
     <string name="date">Selecione a Data</string>
+    <string name="date1">Data de Início</string>
+    <string name="date2">Data do Fim</string>
     <string name="back">Voltar</string>
     <string name="register">Cadastrar</string>
+    <string name="textview">TextView</string>
 </resources>
