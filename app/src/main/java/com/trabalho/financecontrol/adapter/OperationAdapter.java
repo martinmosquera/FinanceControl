@@ -20,23 +20,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
+public class OperationAdapter extends RecyclerView.Adapter<OperationAdapter.MyViewHolder> {
     private final List<Operacao> list;
     String dateString;
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tipo, data, valor;
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tipo = itemView.findViewById(R.id.TipoTextView);
-            data = itemView.findViewById(R.id.DataTextView);
-            valor = itemView.findViewById(R.id.ValorTextView);
-        }
+    public OperationAdapter(List<Operacao> list) {
+        this.list = list;
     }
 
-    public SearchAdapter(List<Operacao> list){
-        this.list = list;
+    public static String formatValor(double valor) {
+        NumberFormat nf = NumberFormat.getInstance(new Locale("pt", "BR"));
+
+        nf.setMinimumFractionDigits(2);
+        nf.setMaximumFractionDigits(2);
+
+        return "R$ " + nf.format(valor);
     }
 
     @NonNull
@@ -57,10 +55,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.tipo.setText(operacao.getTipo().getNome());
         holder.data.setText(dateString);
 
-        if (Objects.equals(operacao.getTipo().getCategoria().getNome(), "Debito")) {
+        if (operacao.getCategoria().getNome().equalsIgnoreCase("Debito")) {
             holder.valor.setText("- " + formatValor(Double.parseDouble(operacao.getValor())));
             holder.valor.setTextColor(Color.parseColor("#c73131"));
-        } else if (Objects.equals(operacao.getTipo().getCategoria().getNome(), "Credito")) {
+        } else if (operacao.getCategoria().getNome().equalsIgnoreCase("Credito")) {
             holder.valor.setText("+ " + formatValor(Double.parseDouble(operacao.getValor())));
             holder.valor.setTextColor(Color.parseColor("#53ae5b"));
         }
@@ -71,12 +69,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         return this.list.size();
     }
 
-    public static String formatValor(double valor){
-        NumberFormat nf = NumberFormat.getInstance(new Locale("pt", "BR"));
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView tipo, data, valor;
 
-        nf.setMinimumFractionDigits(2);
-        nf.setMaximumFractionDigits(2);
-
-        return "R$ " + nf.format(valor);
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tipo = itemView.findViewById(R.id.TipoTextView);
+            data = itemView.findViewById(R.id.DataTextView);
+            valor = itemView.findViewById(R.id.ValorTextView);
+        }
     }
 }

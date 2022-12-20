@@ -1,7 +1,6 @@
 package com.trabalho.financecontrol.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Operacao implements Serializable {
@@ -12,45 +11,44 @@ public class Operacao implements Serializable {
     private String valor;
     private Categoria categoria;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
-
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Tipo getTipo() {
         return tipo;
     }
 
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     public Date getData() {
         return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 
     public String getValor() {
         return valor;
     }
 
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }
 

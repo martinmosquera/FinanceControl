@@ -1,7 +1,5 @@
 package com.trabalho.financecontrol.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -16,9 +14,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.trabalho.financecontrol.R;
 import com.trabalho.financecontrol.helper.OperacaoDAO;
 import com.trabalho.financecontrol.helper.TipoDAO;
+import com.trabalho.financecontrol.model.Categoria;
 import com.trabalho.financecontrol.model.Operacao;
 import com.trabalho.financecontrol.model.Tipo;
 
@@ -31,6 +32,7 @@ import java.util.Objects;
 
 public class OperationActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
     Tipo tipo;
+    private String nome;
     OperacaoDAO operacaoDAO;
 
     Spinner CategoriesSpinner;
@@ -47,8 +49,27 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         setContentView(R.layout.activity_operation);
 
         TipoDAO tipoDAO = new TipoDAO(getApplicationContext());
+        tipoDAO.deleteAllTipos();
         List<Tipo> tipos = tipoDAO.getAllTipos();
-
+        if(tipos.size() == 0){
+            Tipo t = new Tipo();
+            t.setNome("Moradia");
+            t.setCategoria(Categoria.DEBITO);
+            tipoDAO.insertTipo(t);
+            t.setNome("Saúde");
+            t.setCategoria(Categoria.DEBITO);
+            tipoDAO.insertTipo(t);
+            t.setNome("Outros -");
+            t.setCategoria(Categoria.DEBITO);
+            tipoDAO.insertTipo(t);
+            t.setNome("Salário");
+            t.setCategoria(Categoria.CREDITO);
+            tipoDAO.insertTipo(t);
+            t.setNome("Outros +");
+            t.setCategoria(Categoria.CREDITO);
+            tipoDAO.insertTipo(t);
+            tipos = tipoDAO.getAllTipos();
+        }
         operacaoDAO = new OperacaoDAO(getApplicationContext());
 
         CategoriesSpinner = (Spinner) findViewById(R.id.CategoriesSpinner);
@@ -63,6 +84,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         tipo = (Tipo) adapterView.getSelectedItem();
+        System.out.println("=== Tipo Nome: "+tipo.getNome());
         SimpleSpinnerItem = findViewById(R.id.SimpleSpinnerItem);
 
         if (Objects.equals(tipo.getCategoria().getNome(), "Debito")) {
@@ -71,11 +93,12 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
             SimpleSpinnerItem.setTextColor(Color.parseColor("#53ae5b"));
         }
 
-        Toast.makeText(OperationActivity.this,"Selecionado: " + tipo.getNome(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(OperationActivity.this, "Selecionado: " + tipo.getNome(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {}
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
 
     public void cadastrar(View view) throws ParseException {
         if (tipo != null) {
@@ -87,7 +110,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                         data = format.parse(date);
                     } catch (Exception e) {
-                        Toast.makeText(OperationActivity.this,"Selecione uma data válida.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -95,23 +118,27 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
 
                     operacao.setData(data);
                     operacao.setValor(ValueEditText.getText().toString());
-                    operacao.setTipo(tipo);
-
+                    TipoDAO tipoDAO = new TipoDAO(getApplicationContext());
+                    Tipo t = tipoDAO.getByName(this.nome);
+                    operacao.setTipo(t);
+                    operacao.setCategoria(tipo.getCategoria());
                     operacaoDAO.insertOperacao(operacao);
-
-                    Toast.makeText(OperationActivity.this,"Operação cadastrada.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OperationActivity.this, "Operação cadastrada.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    Toast.makeText(OperationActivity.this,"Selecione uma data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OperationActivity.this, "Selecione uma data.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(OperationActivity.this,"Selecione um valor.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OperationActivity.this, "Selecione um valor.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(OperationActivity.this,"Selecione uma categoria.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OperationActivity.this, "Selecione uma categoria.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void datePicker(View view){
+    public void datePicker(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 this,

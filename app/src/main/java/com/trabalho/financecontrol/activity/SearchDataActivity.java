@@ -9,15 +9,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trabalho.financecontrol.R;
-import com.trabalho.financecontrol.adapter.SearchAdapter;
+import com.trabalho.financecontrol.adapter.OperationAdapter;
+import com.trabalho.financecontrol.helper.OperacaoDAO;
+import com.trabalho.financecontrol.model.Operacao;
+
+import java.util.List;
 
 public class SearchDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_data);
-
-        SearchAdapter searchAdapter = new SearchAdapter(SearchActivity.operacoes);
+        List<Operacao> lista = new OperacaoDAO(getApplicationContext()).getAllOperacoes();
+        OperationAdapter operationAdapter = new OperationAdapter(lista);
 
         RecyclerView recyclerView = findViewById(R.id.SearchRecyclerView);
 
@@ -26,6 +30,6 @@ public class SearchDataActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayout.VERTICAL));
 
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.setAdapter(operationAdapter);
     }
 }
