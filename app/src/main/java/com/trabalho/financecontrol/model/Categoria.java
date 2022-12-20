@@ -10,4 +10,6 @@ public enum Categoria {
     public String getNome() {
         return nome;
     }
+
 }
+

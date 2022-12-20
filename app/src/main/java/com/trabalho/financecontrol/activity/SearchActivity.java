@@ -168,5 +168,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+
     }
 }

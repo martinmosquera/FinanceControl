@@ -1,6 +1,7 @@
 package com.trabalho.financecontrol.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Operacao implements Serializable {
@@ -9,6 +10,7 @@ public class Operacao implements Serializable {
     private Tipo tipo;
     private Date data;
     private String valor;
+    private Categoria categoria;
 
     public void setId(long id) {
         this.id = id;
@@ -26,6 +28,11 @@ public class Operacao implements Serializable {
         this.valor = valor;
     }
 
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public long getId() {
         return id;
     }
@@ -41,4 +48,9 @@ public class Operacao implements Serializable {
     public String getValor() {
         return valor;
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
 }
+
