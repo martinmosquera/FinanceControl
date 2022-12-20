@@ -28,6 +28,7 @@ public class Operacao implements Serializable {
         this.valor = valor;
     }
 
+
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
@@ -52,3 +53,4 @@ public class Operacao implements Serializable {
         return categoria;
     }
 }
+

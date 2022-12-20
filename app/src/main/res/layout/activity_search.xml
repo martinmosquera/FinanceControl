@@ -4,6 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
+    android:orientation="vertical"
     tools:context=".activity.SearchActivity">
+
+    <TextView
+        android:id="@+id/TitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="61dp"
+        android:text="@string/search"
+        android:textColor="@color/dark_brown"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toTopOf="@+id/LabelSpinnerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/LabelSpinnerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="@string/operations"
+        android:textColor="@color/dark_brown"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/CategoriesSpinner"
+        app:layout_constraintStart_toStartOf="@+id/CategoriesSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/TitleTextView" />
+
+    <Spinner
+        android:id="@+id/CategoriesSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="428dp"
+        app:layout_constraintBottom_toTopOf="@+id/SearchButton"
+        app:layout_constraintEnd_toEndOf="@+id/TitleTextView"
+        app:layout_constraintStart_toStartOf="@+id/BackButton"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/Date1Button"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/brown"
+        android:onClick="datePicker"
+        android:text="@string/date1"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/Date1TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CategoriesSpinner"
+        tools:ignore="UsingOnClickInXml" />
+
+    <Button
+        android:id="@+id/Date2Button"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/brown"
+        android:onClick="datePicker"
+        android:text="@string/date2"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/Date2TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Date1TextView"
+        tools:ignore="UsingOnClickInXml" />
+
+    <TextView
+        android:id="@+id/Date2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="127dp"
+        android:textColor="@color/dark_brown"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/BackButton"
+        app:layout_constraintStart_toStartOf="@+id/Date2Button"
+        app:layout_constraintTop_toBottomOf="@+id/Date2Button" />
+
+    <TextView
+        android:id="@+id/Date1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="42dp"
+        android:textColor="@color/dark_brown"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/Date2Button"
+        app:layout_constraintStart_toStartOf="@+id/Date1Button"
+        app:layout_constraintTop_toBottomOf="@+id/Date1Button" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BackButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="89dp"
+        android:layout_marginBottom="19dp"
+        android:background="@color/dark_brown"
+        android:onClick="back"
+        android:padding="20dp"
+        android:text="@string/back"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/SearchButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Date2TextView"
+        tools:ignore="UsingOnClickInXml" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/SearchButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="19dp"
+        android:background="@color/brown"
+        android:onClick="search"
+        android:text="@string/search"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BackButton"
+        app:layout_constraintTop_toBottomOf="@+id/CategoriesSpinner"
+        tools:ignore="UsingOnClickInXml,DuplicateSpeakableTextCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

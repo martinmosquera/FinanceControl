@@ -1,6 +1,5 @@
 package com.trabalho.financecontrol.helper;
 
-import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

@@ -35,4 +35,10 @@ public class Tipo implements Serializable {
     public Categoria getCategoria() {
         return categoria;
     }
+
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }
+

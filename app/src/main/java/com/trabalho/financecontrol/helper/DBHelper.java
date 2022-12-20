@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.i("INFO_DB","Tabela tipo Criada com sucesso");
             sqLiteDatabase.execSQL(CREATE_SQL_TABLE2);
             Log.i("INFO_DB","Tabela operacao Criada com sucesso");
+
         }catch (Exception e){
             Log.i("INFO_DB","Erro ao criar as tabelas "+e.getMessage());
         }
@@ -45,3 +46,4 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 }
+

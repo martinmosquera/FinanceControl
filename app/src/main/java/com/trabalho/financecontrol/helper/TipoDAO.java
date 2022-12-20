@@ -77,7 +77,7 @@ public class TipoDAO {
             tipo.setNome(name);
             Categoria c;
             if(categoria.equalsIgnoreCase("Debito")) c = Categoria.DEBITO;
-            else c = Categoria.DEBITO;
+            else c = Categoria.CREDITO;
             tipo.setCategoria(c);
             lista.add(tipo);
         }
