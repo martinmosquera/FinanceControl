@@ -154,7 +154,7 @@ public class OperacaoDAO {
             TipoDAO tipoDAO = new TipoDAO(context);
             Tipo t = tipoDAO.getById(id);
             operacao.setTipo(t);
-           operacao.setData(new Date());
+           operacao.setData(new Date(data));
             operacao.setValor(valor);
             lista.add(operacao);
         }
@@ -182,7 +182,7 @@ public class OperacaoDAO {
             TipoDAO tipoDAO = new TipoDAO(context);
             Tipo t = tipoDAO.getById(id);
             operacao.setTipo(t);
-            operacao.setData(new Date());
+            operacao.setData(new Date(data));
             operacao.setValor(valor);
             lista.add(operacao);
         }
