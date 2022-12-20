@@ -25,6 +25,7 @@ import com.trabalho.financecontrol.model.Tipo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +34,9 @@ import java.util.Objects;
 public class OperationActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
     Tipo tipo;
     private String nome;
+    int ano,mes,dia;
     OperacaoDAO operacaoDAO;
-
+    Operacao operacao;
     Spinner CategoriesSpinner;
     TextView SimpleSpinnerItem;
 
@@ -49,7 +51,6 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         setContentView(R.layout.activity_operation);
 
         TipoDAO tipoDAO = new TipoDAO(getApplicationContext());
-        tipoDAO.deleteAllTipos();
         List<Tipo> tipos = tipoDAO.getAllTipos();
         if(tipos.size() == 0){
             Tipo t = new Tipo();
@@ -75,6 +76,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         CategoriesSpinner = (Spinner) findViewById(R.id.CategoriesSpinner);
         ValueEditText = findViewById(R.id.ValueEditText);
         DateTextView = findViewById(R.id.DateTextView);
+        operacao = new Operacao();
 
         ArrayAdapter<Tipo> tipoAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, tipos);
         CategoriesSpinner.setAdapter(tipoAdapter);
@@ -84,13 +86,14 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         tipo = (Tipo) adapterView.getSelectedItem();
-        System.out.println("=== Tipo Nome: "+tipo.getNome());
         SimpleSpinnerItem = findViewById(R.id.SimpleSpinnerItem);
-
+        operacao.setTipo(tipo);
         if (Objects.equals(tipo.getCategoria().getNome(), "Debito")) {
             SimpleSpinnerItem.setTextColor(Color.parseColor("#c73131"));
+            operacao.setCategoria(Categoria.DEBITO);
         } else if (Objects.equals(tipo.getCategoria().getNome(), "Credito")) {
             SimpleSpinnerItem.setTextColor(Color.parseColor("#53ae5b"));
+            operacao.setCategoria(Categoria.CREDITO);
         }
 
         Toast.makeText(OperationActivity.this, "Selecionado: " + tipo.getNome(), Toast.LENGTH_SHORT).show();
@@ -104,24 +107,18 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         if (tipo != null) {
             if (ValueEditText.getText().toString().length() != 0) {
                 if (date != null) {
-                    Date data;
+                    java.util.Date dataF;
 
                     try {
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        data = format.parse(date);
+
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        dataF = format.parse(date);
+                        operacao.setData(new Date(ano,mes,dia));
                     } catch (Exception e) {
                         Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-                    Operacao operacao = new Operacao();
-
-                    operacao.setData(data);
                     operacao.setValor(ValueEditText.getText().toString());
-                    TipoDAO tipoDAO = new TipoDAO(getApplicationContext());
-                    Tipo t = tipoDAO.getByName(this.nome);
-                    operacao.setTipo(t);
-                    operacao.setCategoria(tipo.getCategoria());
                     operacaoDAO.insertOperacao(operacao);
                     Toast.makeText(OperationActivity.this, "Operação cadastrada.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);
@@ -152,6 +149,9 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         date = day + "/" + (month + 1) + "/" + year;
+        ano = year;
+        dia = day;
+        mes = month+1;
         DateTextView.setText(date);
     }
 

@@ -107,7 +107,7 @@ public class TipoDAO {
     public Tipo getById(long id) {
         Tipo tipo = new Tipo();
         String[] args = {String.valueOf(id)};
-        Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{ "name", "categoria"}, "id=?", args, null, null, null);
+        Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{"id", "name", "categoria"}, "id=?", args, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             int indexName = cursor.getColumnIndex("name");
@@ -127,7 +127,7 @@ public class TipoDAO {
         Tipo tipo = new Tipo();
         try{
             String[] args = {name};
-            Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{"id", "categoria"}, "name=?", args, null, null, null);
+            Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{"id", "name","categoria"}, "name=?", args, null, null, null);
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 int indexId = cursor.getColumnIndex("id");

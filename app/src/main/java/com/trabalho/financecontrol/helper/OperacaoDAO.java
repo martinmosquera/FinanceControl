@@ -101,7 +101,6 @@ public class OperacaoDAO {
                     operacao.setCategoria(Categoria.DEBITO);
                 else operacao.setCategoria(Categoria.CREDITO);
                 lista.add(operacao);
-                return lista;
             }
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();

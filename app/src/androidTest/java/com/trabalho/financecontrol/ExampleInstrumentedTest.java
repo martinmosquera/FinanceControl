@@ -288,22 +288,25 @@ public class ExampleInstrumentedTest {
         o.setValor("100");
         o.setCategoria(Categoria.CREDITO);
         oDAO.insertOperacao(o);
+        o = new Operacao();
+        o.setData(new Date(2022,12,18));
         o.setTipo(t);
         o.setValor("100");
         o.setCategoria(Categoria.CREDITO);
         oDAO.insertOperacao(o);
+        o = new Operacao();
         o.setTipo(t);
         o.setValor("100");
+        o.setData(new Date(2022,12,20));
         o.setCategoria(Categoria.CREDITO);
         oDAO.insertOperacao(o);
+
         List<Operacao> lista = oDAO.getAllOperacoes();
-        int count = 0;
-        while (lista.size() > 0) {
-          System.out.println("operacao "+lista.get(0).getCategoria().getNome());
-          oDAO.deleteOperacao(lista.get(0));
-            lista = oDAO.getAllOperacoes();
+        for(Operacao op : lista){
+            System.out.println(op.getData());
         }
-        assertEquals(0, lista.size(), 0);
+
+        assertEquals(5, lista.size(), 0);
     }
 
 }
