@@ -152,4 +152,10 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         finish();
 
     }
+
+    public void loadAddCategoria(View view){
+        Intent intent = new Intent(this, CategoriaActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -48,6 +48,21 @@
         app:layout_constraintTop_toBottomOf="@+id/LabelSpinnerTextView"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="4dp"
+        android:background="@color/melted_yellow"
+        android:onClick="loadAddCategoria"
+        app:layout_constraintBottom_toTopOf="@+id/ValueEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toEndOf="@+id/CategoriesSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/TitleTextView"
+        app:layout_constraintVertical_bias="0.8"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
     <TextView
         android:id="@+id/LabelValueTextView"
         android:layout_width="wrap_content"

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow"
+    tools:context=".activity.CategoriaActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="362dp"
+        android:layout_height="238dp"
+        android:layout_margin="10dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="40dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.308">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_span="2"
+                android:text="Cadastro de Categorias"
+                android:textColor="@color/black"
+                android:textSize="26sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="30dp">
+
+            <TextView
+                android:id="@+id/nomeCategTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="Nome"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/categNomeEditText"
+                android:layout_width="312dp"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:ems="10"
+                android:hint="Digite o nome"
+                android:inputType="textPersonName"
+                android:paddingLeft="4dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tipoCategTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="Tipo"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+
+            <Spinner
+                android:id="@+id/addCategoriespinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Tipo de transação" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TableRow
+        android:layout_width="335dp"
+        android:layout_height="117dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        app:layout_constraintVertical_bias="0.268">
+
+        <Button
+            android:id="@+id/voltarBotton"
+            android:layout_width="112dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="50dp"
+            android:onClick="voltar"
+            android:text="Voltar" />
+
+        <Button
+            android:id="@+id/addCategorie"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="10dp"
+            android:onClick="addCategorie"
+            android:text="Cadastrar" />
+    </TableRow>
+</androidx.constraintlayout.widget.ConstraintLayout>
