@@ -40,6 +40,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         oDAO = new OperacaoDAO(getApplicationContext());
         recyclerView = findViewById(R.id.listReciclerView);
+        lista = new ArrayList<>();
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -88,12 +89,12 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void updatedRecyclerView(){
-        List<Operacao> lista = oDAO.getAllByCategoria();
+        List<Operacao> list = oDAO.getAllOperacoes();
         saldoD = 0;
         saldoC = 0;
         List<Operacao> listaD =  new ArrayList<>();
         List<Operacao> listaC =  new ArrayList<>();
-        for (Operacao o : lista) {
+        for (Operacao o : list) {
             if(o.getCategoria().getNome().equalsIgnoreCase("Debito")){
                 saldoD += Double.parseDouble(o.getValor());
                 listaD.add(o);
@@ -101,11 +102,10 @@ public class ListActivity extends AppCompatActivity {
                 saldoC += Double.parseDouble(o.getValor());
                 listaC.add(o);
             }
-
         }
         listaD.addAll(listaC);
         this.lista = listaD;
-        OperationAdapter operationAdapter = new OperationAdapter(listaD);
+        OperationAdapter operationAdapter = new OperationAdapter(lista);
         TextView totalD = findViewById(R.id.totalDebitotextView);
         TextView totalC = findViewById(R.id.totalCreditotextView);
         totalD.setTextColor(Color.parseColor("#c73131"));

@@ -59,7 +59,7 @@ public class ExampleInstrumentedTest {
         long id = tipoDAO.insertTipo(t);
 
         t = tipoDAO.getById(id);
-        assertEquals("Comida", t.getNome());
+        assertEquals("comida", t.getNome());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class ExampleInstrumentedTest {
         o.setCategoria(Categoria.DEBITO);
         long idOpera = oDAO.insertOperacao(o);
         Operacao operacao = oDAO.getById(idOpera);
-        assertEquals("Comida", operacao.getTipo().getNome());
+        assertEquals("comida", operacao.getTipo().getNome());
     }
 
     @Test
@@ -185,11 +185,8 @@ public class ExampleInstrumentedTest {
     @Test
     public void deleteOperationSQL() {
         OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        oDAO.deleteAllOperations();
         List<Operacao> lista = oDAO.getAllOperacoes();
-        while (lista.size() > 0) {
-            oDAO.deleteOperacao(lista.get(0));
-            lista = oDAO.getAllOperacoes();
-        }
         assertEquals(0, lista.size(), 0);
     }
 
@@ -226,10 +223,7 @@ public class ExampleInstrumentedTest {
         OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
         TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
         List<Operacao> lista = oDAO.getAllOperacoes();
-        while (lista.size() > 0) {
-            oDAO.deleteOperacao(lista.get(0));
-            lista = oDAO.getAllOperacoes();
-        }
+        oDAO.deleteAllOperations();
         Operacao o = new Operacao();
         Tipo t = new Tipo();
         t.setNome("Comida");
@@ -261,7 +255,7 @@ public class ExampleInstrumentedTest {
             e.printStackTrace();
         }
         lista = oDAO.getByDataCategoria(y1, y2, Categoria.CREDITO.getNome());
-        assertEquals(2, lista.size(), 0);
+        assertEquals(1, lista.size(), 0);
     }
 
     @Test
@@ -353,6 +347,83 @@ public class ExampleInstrumentedTest {
         Operacao o2;
         o2 = oDAO.getById(i);
         assertEquals("80",o2.getValor());
+    }
+
+    @Test
+    public void listAllOperations(){
+        OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        Date date1= null;
+        Operacao o = new Operacao();
+        oDAO.deleteAllOperations();
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("11/01/2022");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Tipo t = tDAO.getByName("salario");
+        t.setCategoria(Categoria.CREDITO);
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("100");
+        o.setCategoria(Categoria.CREDITO);
+        long i = oDAO.insertOperacao(o);
+
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("11/11/2022");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        t = tDAO.getByName("Outros +");
+        o.setTipo(t);
+        o.setValor("100");
+        o.setCategoria(Categoria.CREDITO);
+        i = oDAO.insertOperacao(o);
+
+
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("11/01/2021");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("100");
+        o.setCategoria(Categoria.DEBITO);
+        i = oDAO.insertOperacao(o);
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("11/01/2023");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("100");
+        o.setCategoria(Categoria.CREDITO);
+        i = oDAO.insertOperacao(o);
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("01/11/2022");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("40");
+        o.setCategoria(Categoria.CREDITO);
+        i = oDAO.insertOperacao(o);
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("12/12/2000");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("80");
+        o.setCategoria(Categoria.CREDITO);
+        i = oDAO.insertOperacao(o);
+        List<Operacao> lista = oDAO.getAllOperacoes();
+        assertEquals(6,lista.size(),0);
     }
 
 }

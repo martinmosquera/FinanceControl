@@ -11,6 +11,7 @@ import com.trabalho.financecontrol.model.Tipo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TipoDAO {
 
@@ -25,7 +26,8 @@ public class TipoDAO {
 
     public long insertTipo(Tipo tipo) {
         ContentValues values = new ContentValues();
-        values.put("name", tipo.getNome());
+        String n = tipo.getNome().toLowerCase(Locale.ROOT);
+        values.put("name", n);
         values.put("categoria", tipo.getCategoria().getNome());
         long id = -1;
         try {
@@ -119,8 +121,9 @@ public class TipoDAO {
 
     public Tipo getByName(String name) {
         Tipo tipo = new Tipo();
+        String n = name.toLowerCase(Locale.ROOT);
         try{
-            String[] args = {name};
+            String[] args = {n};
             Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{"id", "name","categoria"}, "name=?", args, null, null, null);
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();

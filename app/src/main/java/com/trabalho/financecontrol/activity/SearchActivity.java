@@ -114,9 +114,9 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                         if(categoria.equalsIgnoreCase("Todas"))
                             cate = "-1";
                         else if(categoria.equalsIgnoreCase("Débito"))
-                            cate = "Debito";
+                            cate = "debito";
                         else if(categoria.equalsIgnoreCase("Crédito"))
-                            cate = "Credito";
+                            cate = "credito";
                         i.putExtra("cat",cate);
                         startActivity(i);
                     } catch (Exception e) {

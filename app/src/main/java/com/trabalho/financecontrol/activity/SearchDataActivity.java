@@ -30,7 +30,7 @@ public class SearchDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_data);
         Bundle b = getIntent().getExtras();
         OperacaoDAO oDao = new OperacaoDAO(getApplicationContext());
-        lista = new ArrayList<>();
+        lista = oDao.getAllOperacoes();
         try{
             Date dat1 = new SimpleDateFormat("dd/MM/yyyy").parse(b.getString("d1"));
             Date dat2 = new SimpleDateFormat("dd/MM/yyyy").parse(b.getString("d2"));

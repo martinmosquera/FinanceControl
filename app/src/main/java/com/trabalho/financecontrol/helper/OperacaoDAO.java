@@ -83,7 +83,7 @@ public class OperacaoDAO {
         List<Operacao> lista = new ArrayList<>();
         try{
             Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
-            cursor.moveToFirst();
+
             while (cursor.moveToNext()) {
                 Operacao operacao = new Operacao();
                 int indexId = cursor.getColumnIndex("id");
@@ -154,8 +154,7 @@ public class OperacaoDAO {
         String d1String = sdf1.format(d1);
         String d2String = sdf1.format(d2);
         String[] args = {d1String, d2String};
-        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, "(data BETWEEN ? AND ?)", args, null, null, null);
-        cursor.moveToFirst();
+        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             Operacao operacao = new Operacao();
             int indexId = cursor.getColumnIndex("id");
@@ -180,15 +179,10 @@ public class OperacaoDAO {
             }
             operacao.setData(dat);
             operacao.setValor(valor);
-            if (cat.equalsIgnoreCase("Debito"))
-                operacao.setCategoria(Categoria.DEBITO);
-            else operacao.setCategoria(Categoria.CREDITO);
-            if(dat.compareTo(d1) > 0 || dat.compareTo(d1) == 0 ){
-                if(dat.compareTo(d2) < 0 || dat.compareTo(d2) == 0){
+            operacao.setCategoria(t.getCategoria());
+            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) < 0){
                     lista.add(operacao);
-                }
             }
-
         }
         Collections.sort(lista);
         return lista;
@@ -197,7 +191,6 @@ public class OperacaoDAO {
     public List<Operacao> getByDataCategoria(java.util.Date d1, java.util.Date d2, String c) {
         List<Operacao> lista = new ArrayList<>();
         Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
-        cursor.moveToFirst();
         while (cursor.moveToNext()) {
             Operacao operacao = new Operacao();
             int indexId = cursor.getColumnIndex("id");
@@ -214,9 +207,7 @@ public class OperacaoDAO {
             TipoDAO tipoDAO = new TipoDAO(context);
             Tipo t = tipoDAO.getById(tipo);
             operacao.setTipo(t);
-            if (cat.equalsIgnoreCase("Debito"))
-                operacao.setCategoria(Categoria.DEBITO);
-            else operacao.setCategoria(Categoria.CREDITO);
+            operacao.setCategoria(t.getCategoria());
             Date dat = null;
             try {
                 dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
@@ -225,51 +216,11 @@ public class OperacaoDAO {
             }
             operacao.setData(dat);
             operacao.setValor(valor);
-
-
-            if(dat.compareTo(d1) > 0 || dat.compareTo(d1) == 0 ){
-                if(dat.compareTo(d2) < 0 || dat.compareTo(d2) == 0){
+            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) < 0){
                     if(cat.equalsIgnoreCase(c)){
                         lista.add(operacao);
-                    }
                 }
             }
-        }
-        Collections.sort(lista);
-        return lista;
-    }
-
-    public List<Operacao> getAllByCategoria() {
-        List<Operacao> lista = new ArrayList<>();
-        try{
-            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "categoria DESC");
-            cursor.moveToFirst();
-            while (cursor.moveToNext()) {
-                Operacao operacao = new Operacao();
-                int indexId = cursor.getColumnIndex("id");
-                int indexTipo = cursor.getColumnIndex("tipo");
-                int indexData = cursor.getColumnIndex("data");
-                int indexValor = cursor.getColumnIndex("valor");
-                int indexCategoria = cursor.getColumnIndex("categoria");
-                Long id = cursor.getLong(indexId);
-                long tipo = cursor.getLong(indexTipo);
-                String data = cursor.getString(indexData);
-                String valor = cursor.getString(indexValor);
-                String categoria = cursor.getString(indexCategoria);
-                operacao.setId(id);
-                TipoDAO tipoDAO = new TipoDAO(context);
-                Tipo t = tipoDAO.getById(tipo);
-                operacao.setTipo(t);
-                Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
-                operacao.setData(dat);
-                operacao.setValor(valor);
-                if (categoria.equalsIgnoreCase("Debito"))
-                    operacao.setCategoria(Categoria.DEBITO);
-                else operacao.setCategoria(Categoria.CREDITO);
-                lista.add(operacao);
-            }
-        }catch (Exception e){
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         Collections.sort(lista);
         return lista;
