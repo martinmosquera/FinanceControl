@@ -3,7 +3,7 @@ package com.trabalho.financecontrol.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Operacao implements Serializable {
+public class Operacao implements Serializable, Comparable<Operacao> {
 
     private long id;
     private Tipo tipo;
@@ -49,6 +49,11 @@ public class Operacao implements Serializable {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    @Override
+    public int compareTo(Operacao operacao) {
+        return this.getData().compareTo(operacao.getData());
     }
 }
 

@@ -14,6 +14,7 @@ import com.trabalho.financecontrol.model.Tipo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class OperacaoDAO {
     public List<Operacao> getAllOperacoes() {
         List<Operacao> lista = new ArrayList<>();
         try{
-            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "data DESC");
+            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
             cursor.moveToFirst();
             while (cursor.moveToNext()) {
                 Operacao operacao = new Operacao();
@@ -107,6 +108,7 @@ public class OperacaoDAO {
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        Collections.sort(lista,Collections.reverseOrder());
         return lista;
     }
 
@@ -149,7 +151,7 @@ public class OperacaoDAO {
         String d1String = sdf1.format(d1);
         String d2String = sdf1.format(d2);
         String[] args = {d1String, d2String};
-        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, "(data BETWEEN ? AND ?)", args, null, null, "data");
+        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, "(data BETWEEN ? AND ?)", args, null, null, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             Operacao operacao = new Operacao();
@@ -185,12 +187,13 @@ public class OperacaoDAO {
             }
 
         }
+        Collections.sort(lista);
         return lista;
     }
 
     public List<Operacao> getByDataCategoria(java.util.Date d1, java.util.Date d2, String c) {
         List<Operacao> lista = new ArrayList<>();
-        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "data");
+        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             Operacao operacao = new Operacao();
@@ -229,13 +232,14 @@ public class OperacaoDAO {
                 }
             }
         }
+        Collections.sort(lista);
         return lista;
     }
 
     public List<Operacao> getAllByCategoria() {
         List<Operacao> lista = new ArrayList<>();
         try{
-            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "categoria DESC, data ASC");
+            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "categoria DESC");
             cursor.moveToFirst();
             while (cursor.moveToNext()) {
                 Operacao operacao = new Operacao();
@@ -264,6 +268,7 @@ public class OperacaoDAO {
         }catch (Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        Collections.sort(lista);
         return lista;
     }
 

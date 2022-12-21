@@ -19,6 +19,7 @@ import com.trabalho.financecontrol.adapter.OperationAdapter;
 import com.trabalho.financecontrol.helper.OperacaoDAO;
 import com.trabalho.financecontrol.model.Operacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
@@ -45,14 +46,20 @@ public class ListActivity extends AppCompatActivity {
 
     public void updateReciclerView(){
         List<Operacao> lista = oDAO.getAllByCategoria();
-        OperationAdapter operationAdapter = new OperationAdapter(lista);
-
+        List<Operacao> listaD =  new ArrayList<>();
+        List<Operacao> listaC =  new ArrayList<>();
         for (Operacao o : lista) {
-            if(o.getCategoria().getNome().equalsIgnoreCase("Debito"))
+            if(o.getCategoria().getNome().equalsIgnoreCase("Debito")){
                 saldoD += Double.parseDouble(o.getValor());
-            else
+                listaD.add(o);
+            }else{
                 saldoC += Double.parseDouble(o.getValor());
+                listaC.add(o);
+            }
+
         }
+        listaD.addAll(listaC);
+        OperationAdapter operationAdapter = new OperationAdapter(listaD);
         TextView totalD = findViewById(R.id.totalDebitotextView);
         TextView totalC = findViewById(R.id.totalCreditotextView);
         totalD.setTextColor(Color.parseColor("#c73131"));
