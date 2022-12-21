@@ -22,13 +22,15 @@ import java.util.List;
 import kotlin.jvm.Throws;
 
 public class SearchDataActivity extends AppCompatActivity {
+
+    List<Operacao> lista;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_data);
         Bundle b = getIntent().getExtras();
         OperacaoDAO oDao = new OperacaoDAO(getApplicationContext());
-        List<Operacao> lista = new ArrayList<>();
+        lista = new ArrayList<>();
         try{
             Date dat1 = new SimpleDateFormat("dd/MM/yyyy").parse(b.getString("d1"));
             Date dat2 = new SimpleDateFormat("dd/MM/yyyy").parse(b.getString("d2"));

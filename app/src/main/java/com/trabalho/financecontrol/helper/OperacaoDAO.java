@@ -52,7 +52,10 @@ public class OperacaoDAO {
         ContentValues values = new ContentValues();
         values.put("tipo", operacao.getTipo().getId());
         values.put("valor", operacao.getValor());
+        String inDate = new SimpleDateFormat("dd/MM/yyyy").format(operacao.getData());
+        values.put("data", inDate);
         values.put("categoria", operacao.getCategoria().getNome());
+
         try {
             String[] args = {String.valueOf(operacao.getId())};
             write.update(DBHelper.TABLE2_NAME, values, "id=?", args);

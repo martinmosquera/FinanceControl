@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -31,6 +32,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,33 +47,44 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     EditText ValueEditText;
     TextView DateTextView;
     String date;
+    boolean edited;
     private String current = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
-
+        edited = false;
         TipoDAO tipoDAO = new TipoDAO(getApplicationContext());
+        List<String> tiposNames = new ArrayList<>();
         List<Tipo> tipos = tipoDAO.getAllTipos();
         if(tipos.size() == 0){
             Tipo t = new Tipo();
             t.setNome("Moradia");
             t.setCategoria(Categoria.DEBITO);
             tipoDAO.insertTipo(t);
+            tiposNames.add(t.getNome());
             t.setNome("Saúde");
             t.setCategoria(Categoria.DEBITO);
             tipoDAO.insertTipo(t);
+            tiposNames.add(t.getNome());
             t.setNome("Outros -");
             t.setCategoria(Categoria.DEBITO);
             tipoDAO.insertTipo(t);
+            tiposNames.add(t.getNome());
             t.setNome("Salário");
             t.setCategoria(Categoria.CREDITO);
             tipoDAO.insertTipo(t);
+            tiposNames.add(t.getNome());
             t.setNome("Outros +");
             t.setCategoria(Categoria.CREDITO);
             tipoDAO.insertTipo(t);
+            tiposNames.add(t.getNome());
             tipos = tipoDAO.getAllTipos();
+        }else{
+            for(Tipo t : tipos){
+                tiposNames.add(t.getNome());
+            }
         }
         operacaoDAO = new OperacaoDAO(getApplicationContext());
         CategoriesSpinner = (Spinner) findViewById(R.id.CategoriesSpinner);
@@ -81,7 +94,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-            //  Ideia taked from https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     ValueEditText.removeTextChangedListener(this);
@@ -101,7 +114,24 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         });
         DateTextView = findViewById(R.id.DateTextView);
         operacao = new Operacao();
-
+        Operacao selected = (Operacao) getIntent().getSerializableExtra("operacao");
+        if(selected != null){
+            date = new SimpleDateFormat("dd/MM/yyyy").format(selected.getData());
+            DateTextView.setText(date);
+            double parsed = Double.parseDouble(selected.getValor());
+            String formatted = formatValor((parsed));
+            current = formatted;
+            ValueEditText.setText(formatted);
+            int indexCat = tiposNames.indexOf(selected.getTipo().getNome());
+            CategoriesSpinner.post(new Runnable() {
+                @Override
+                public void run() {
+                    CategoriesSpinner.setSelection(indexCat);
+                }
+            });
+            operacao.setId(selected.getId());
+            edited = true;
+        }
         ArrayAdapter<Tipo> tipoAdapter = new ArrayAdapter<>(this, R.layout.simple_spinner_item, tipos);
         CategoriesSpinner.setAdapter(tipoAdapter);
         CategoriesSpinner.setOnItemSelectedListener(this);
@@ -128,33 +158,61 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     }
 
     public void cadastrar(View view) throws ParseException {
-        if (tipo != null) {
-            if (ValueEditText.getText().toString().length() != 0) {
-                if (date != null) {
+        if(edited){
+            if(tipo != null){
+                if(ValueEditText.getText().toString().length() != 0){
+                    if (date != null){
+                        try {
+                            Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(DateTextView.getText().toString());
+                            operacao.setData(dat);
+                        } catch (Exception e) {
+                            Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String valorS = ValueEditText.getText().toString().replaceAll("[R$,.]", "");
+                        Double valorD = Double.parseDouble(valorS)/100;
+                        operacao.setValor(String.valueOf(valorD));
+                        if(operacaoDAO.updateOperacao(operacao)){
+                            Toast.makeText(OperationActivity.this, "Operação Atualizada.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Toast.makeText(OperationActivity.this, "Erro na Atualização .", Toast.LENGTH_SHORT).show();
+                        }
 
-                    try {
-                        Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(DateTextView.getText().toString());
-                        operacao.setData(dat);
-                    } catch (Exception e) {
-                        Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    String valorS = ValueEditText.getText().toString().replaceAll("[R$,.]", "");
-                    Double valorD = Double.parseDouble(valorS)/100;
-                    operacao.setValor(String.valueOf(valorD));
-                    operacaoDAO.insertOperacao(operacao);
-                    Toast.makeText(OperationActivity.this, "Operação cadastrada.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                }
+            }
+        }else{
+            if (tipo != null) {
+                if (ValueEditText.getText().toString().length() != 0) {
+                    if (date != null) {
+
+                        try {
+                            Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(DateTextView.getText().toString());
+                            operacao.setData(dat);
+                        } catch (Exception e) {
+                            Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String valorS = ValueEditText.getText().toString().replaceAll("[R$,.]", "");
+                        Double valorD = Double.parseDouble(valorS)/100;
+                        operacao.setValor(String.valueOf(valorD));
+                        operacaoDAO.insertOperacao(operacao);
+                        Toast.makeText(OperationActivity.this, "Operação cadastrada.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(OperationActivity.this, "Selecione uma data.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(OperationActivity.this, "Selecione uma data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OperationActivity.this, "Selecione um valor.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(OperationActivity.this, "Selecione um valor.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OperationActivity.this, "Selecione uma categoria.", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(OperationActivity.this, "Selecione uma categoria.", Toast.LENGTH_SHORT).show();
         }
     }
 

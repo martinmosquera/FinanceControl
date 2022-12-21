@@ -328,4 +328,31 @@ public class ExampleInstrumentedTest {
         assertEquals(3, lista.size(), 0);
     }
 
+    @Test
+    public void operationUpdate(){
+        OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        oDAO.deleteAllOperations();
+        Operacao o = new Operacao();
+        Tipo t = tDAO.getByName("Salario");
+        Date date1= null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse("11/01/2022");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
+        o.setTipo(t);
+        o.setValor("100");
+        o.setCategoria(Categoria.CREDITO);
+        long i = oDAO.insertOperacao(o);
+
+        o.setValor("80");
+        o.setId(i);
+        oDAO.updateOperacao(o);
+        Operacao o2;
+        o2 = oDAO.getById(i);
+        assertEquals("80",o2.getValor());
+    }
+
 }
