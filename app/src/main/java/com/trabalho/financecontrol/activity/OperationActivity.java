@@ -23,6 +23,7 @@ import com.trabalho.financecontrol.model.Categoria;
 import com.trabalho.financecontrol.model.Operacao;
 import com.trabalho.financecontrol.model.Tipo;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -107,13 +108,11 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
         if (tipo != null) {
             if (ValueEditText.getText().toString().length() != 0) {
                 if (date != null) {
-                    java.util.Date dataF;
 
                     try {
-
-                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        dataF = format.parse(date);
-                        operacao.setData(new Date(ano,mes,dia));
+                        Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(DateTextView.getText().toString());
+                        System.out.println("Data Armazenada "+dat);
+                        operacao.setData(dat);
                     } catch (Exception e) {
                         Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
                         return;
@@ -148,10 +147,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        date = day + "/" + (month + 1) + "/" + year;
-        ano = year;
-        dia = day;
-        mes = month+1;
+        date = day+ "/"+(month+1)+"/" + year;
         DateTextView.setText(date);
     }
 

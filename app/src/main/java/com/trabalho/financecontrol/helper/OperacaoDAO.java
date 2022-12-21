@@ -11,6 +11,7 @@ import com.trabalho.financecontrol.model.Categoria;
 import com.trabalho.financecontrol.model.Operacao;
 import com.trabalho.financecontrol.model.Tipo;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,8 +34,8 @@ public class OperacaoDAO {
         ContentValues values = new ContentValues();
         values.put("tipo", operacao.getTipo().getId());
         values.put("valor", operacao.getValor());
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-        values.put("data", sdf1.format(operacao.getData()));
+        String inDate = new SimpleDateFormat("dd/MM/yyyy").format(operacao.getData());
+        values.put("data", inDate);
         values.put("categoria", operacao.getCategoria().getNome());
         long id = -1;
         try {
@@ -95,7 +96,8 @@ public class OperacaoDAO {
                 TipoDAO tipoDAO = new TipoDAO(context);
                 Tipo t = tipoDAO.getById(tipo);
                 operacao.setTipo(t);
-                operacao.setData(new Date(data));
+                Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
+                operacao.setData(dat);
                 operacao.setValor(valor);
                 if (categoria.equalsIgnoreCase("Debito"))
                     operacao.setCategoria(Categoria.DEBITO);
@@ -126,7 +128,13 @@ public class OperacaoDAO {
             TipoDAO tipoDAO = new TipoDAO(context);
             Tipo t = tipoDAO.getById(tipo);
             operacao.setTipo(t);
-            operacao.setData(new Date(data));
+            Date dat = null;
+            try {
+                dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            operacao.setData(dat);
             operacao.setValor(valor);
             if (categoria.equalsIgnoreCase("Debito"))
                 operacao.setCategoria(Categoria.DEBITO);
@@ -149,28 +157,40 @@ public class OperacaoDAO {
             int indexTipo = cursor.getColumnIndex("tipo");
             int indexData = cursor.getColumnIndex("data");
             int indexValor = cursor.getColumnIndex("valor");
+            int indexCategoria = cursor.getColumnIndex("categoria");
             Long id = cursor.getLong(indexId);
             long tipo = cursor.getLong(indexTipo);
             String data = cursor.getString(indexData);
             String valor = cursor.getString(indexValor);
+            String cat = cursor.getString(indexCategoria);
             operacao.setId(id);
             TipoDAO tipoDAO = new TipoDAO(context);
-            Tipo t = tipoDAO.getById(id);
+            Tipo t = tipoDAO.getById(tipo);
             operacao.setTipo(t);
-            operacao.setData(new Date(data));
+            Date dat = null;
+            try {
+                dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            operacao.setData(dat);
             operacao.setValor(valor);
-            lista.add(operacao);
+            if (cat.equalsIgnoreCase("Debito"))
+                operacao.setCategoria(Categoria.DEBITO);
+            else operacao.setCategoria(Categoria.CREDITO);
+            if(dat.compareTo(d1) > 0 || dat.compareTo(d1) == 0 ){
+                if(dat.compareTo(d2) < 0 || dat.compareTo(d2) == 0){
+                    lista.add(operacao);
+                }
+            }
+
         }
         return lista;
     }
 
     public List<Operacao> getByDataCategoria(java.util.Date d1, java.util.Date d2, String c) {
         List<Operacao> lista = new ArrayList<>();
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-        String d1String = sdf1.format(d1);
-        String d2String = sdf1.format(d2);
-        String[] args = {d1String, d2String, c};
-        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, "(data BETWEEN ? AND ?) AND categoria=?", args, null, null, "data");
+        Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "data");
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             Operacao operacao = new Operacao();
@@ -178,18 +198,45 @@ public class OperacaoDAO {
             int indexTipo = cursor.getColumnIndex("tipo");
             int indexData = cursor.getColumnIndex("data");
             int indexValor = cursor.getColumnIndex("valor");
+            int indexCategoria = cursor.getColumnIndex("categoria");
             Long id = cursor.getLong(indexId);
             long tipo = cursor.getLong(indexTipo);
             String data = cursor.getString(indexData);
             String valor = cursor.getString(indexValor);
+            String cat = cursor.getString(indexCategoria);
             operacao.setId(id);
             TipoDAO tipoDAO = new TipoDAO(context);
-            Tipo t = tipoDAO.getById(id);
+            Tipo t = tipoDAO.getById(tipo);
             operacao.setTipo(t);
-            operacao.setData(new Date(data));
+            if (cat.equalsIgnoreCase("Debito"))
+                operacao.setCategoria(Categoria.DEBITO);
+            else operacao.setCategoria(Categoria.CREDITO);
+            Date dat = null;
+            try {
+                dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            operacao.setData(dat);
             operacao.setValor(valor);
-            lista.add(operacao);
+
+
+            if(dat.compareTo(d1) > 0 || dat.compareTo(d1) == 0 ){
+                if(dat.compareTo(d2) < 0 || dat.compareTo(d2) == 0){
+                    if(cat.equalsIgnoreCase(c)){
+                        lista.add(operacao);
+                    }
+                }
+            }
         }
         return lista;
+    }
+
+    public void deleteAllOperations(){
+        List<Operacao> lista = getAllOperacoes();
+        while (lista.size() > 0) {
+            deleteOperacao(lista.get(0));
+            lista = getAllOperacoes();
+        }
     }
 }

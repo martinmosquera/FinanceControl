@@ -3,6 +3,7 @@ package com.trabalho.financecontrol;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
+import android.provider.Settings;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -16,6 +17,7 @@ import com.trabalho.financecontrol.model.Tipo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -281,15 +283,16 @@ public class ExampleInstrumentedTest {
     public void testgetAllOperations(){
         OperacaoDAO oDAO = new OperacaoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
         TipoDAO tDAO = new TipoDAO(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        oDAO.deleteAllOperations();
         Operacao o = new Operacao();
-        o.setData(new Date(2022,12,19));
+        o.setData(new Date(System.currentTimeMillis()));
         Tipo t = tDAO.getByName("Salario");
         o.setTipo(t);
         o.setValor("100");
         o.setCategoria(Categoria.CREDITO);
         oDAO.insertOperacao(o);
         o = new Operacao();
-        o.setData(new Date(2022,12,18));
+        o.setData(new Date(System.currentTimeMillis()-10000000));
         o.setTipo(t);
         o.setValor("100");
         o.setCategoria(Categoria.CREDITO);
@@ -297,7 +300,14 @@ public class ExampleInstrumentedTest {
         o = new Operacao();
         o.setTipo(t);
         o.setValor("100");
-        o.setData(new Date(2022,12,20));
+        String sDate1="01/02/2022";
+        Date date1= null;
+        try {
+            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(date1);
         o.setCategoria(Categoria.CREDITO);
         oDAO.insertOperacao(o);
 
@@ -306,7 +316,7 @@ public class ExampleInstrumentedTest {
             System.out.println(op.getData());
         }
 
-        assertEquals(5, lista.size(), 0);
+        assertEquals(3, lista.size(), 0);
     }
 
 }

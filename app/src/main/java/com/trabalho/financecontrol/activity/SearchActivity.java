@@ -106,17 +106,20 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
         if (date1 != null) {
             if (date2 != null) {
                 if (categoria != null) {
-                    Date data1, data2;
-
                     try {
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        data1 = format.parse(date1);
-                        data2 = format.parse(date2);
-                        if(categoria.equalsIgnoreCase("todas")){
-                            operacoes = operacaoDAO.getByData(data1,data2);
-                        }else
-                            operacoes = operacaoDAO.getByDataCategoria(data1, data2, categoria);
                         Intent i = new Intent(this, SearchDataActivity.class);
+                        i.putExtra("d1",Date1textView.getText().toString());
+                        i.putExtra("d2",Date2textView.getText().toString());
+                        String cate= "";
+                        System.out.println("Categoria - "+categoria);
+
+                        if(categoria.equalsIgnoreCase("Todas"))
+                            cate = "-1";
+                        else if(categoria.equalsIgnoreCase("Débito"))
+                            cate = "Debito";
+                        else if(categoria.equalsIgnoreCase("Crédito"))
+                            cate = "Credito";
+                        i.putExtra("cat",cate);
                         startActivity(i);
                     } catch (Exception e) {
                         Toast.makeText(SearchActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
