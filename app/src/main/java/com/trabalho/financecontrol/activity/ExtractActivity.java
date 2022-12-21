@@ -46,23 +46,30 @@ public class ExtractActivity extends AppCompatActivity {
 
     public void updateReciclerView(){
         List<Operacao> lista = oDAO.getAllOperacoes();
-        OperationAdapter operationAdapter;
-        if(lista.size() < 15){
-            operationAdapter = new OperationAdapter(lista);
-        }else{
-            List<Operacao> listaAux = new ArrayList<>();
-            for(int i =0;i <15;i++){
-                listaAux.add(lista.get(i));
+        OperationAdapter operationAdapter = null;
+        if(lista.size() > 0){
+
+            if(lista.size() < 15){
+                operationAdapter = new OperationAdapter(lista);
+            }else{
+                List<Operacao> listaAux = new ArrayList<>();
+                for(int i =0;i <15;i++){
+                    listaAux.add(lista.get(i));
+                }
+                operationAdapter = new OperationAdapter(listaAux);
             }
-            operationAdapter = new OperationAdapter(listaAux);
+
+            for (Operacao o : lista) {
+                if(o.getCategoria().getNome().equalsIgnoreCase("Debito"))
+                    saldo -= Double.parseDouble(o.getValor());
+                else
+                    saldo += Double.parseDouble(o.getValor());
+            }
+        }else{
+            lista = new ArrayList<Operacao>();
+            operationAdapter = new OperationAdapter(lista);
         }
 
-        for (Operacao o : lista) {
-            if(o.getCategoria().getNome().equalsIgnoreCase("Debito"))
-                saldo -= Double.parseDouble(o.getValor());
-            else
-                saldo += Double.parseDouble(o.getValor());
-        }
         TextView total = findViewById(R.id.totaltextView);
         total.setText(formatValor(saldo));
         if(saldo <= 0){

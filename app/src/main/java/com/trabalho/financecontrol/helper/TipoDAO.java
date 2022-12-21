@@ -67,16 +67,10 @@ public class TipoDAO {
 
     public boolean deleteAllTipos() {
         try {
-            Cursor cursor = read.query(DBHelper.TABLE1_NAME, new String[]{"id", "name", "categoria"}, null, null, null, null, null);
-            while (cursor.moveToNext()) {
-                Tipo tipo = new Tipo();
-                int indexId = cursor.getColumnIndex("id");
-                Long id = cursor.getLong(indexId);
-                String[] args = {String.valueOf(id)};
-                write.delete(DBHelper.TABLE1_NAME, "id=?", args);
-            }
+            String[] args = {String.valueOf(0)};
+            write.delete(DBHelper.TABLE1_NAME, "id>?", args);
         } catch (Exception e) {
-            Log.e("INFO", "Erro ao remover o tipo" + e.getMessage());
+            Log.e("INFO", "Erro ao remover os tipos" + e.getMessage());
             return false;
         }
         return true;

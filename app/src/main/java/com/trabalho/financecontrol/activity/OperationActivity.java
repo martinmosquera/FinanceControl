@@ -1,10 +1,13 @@
 package com.trabalho.financecontrol.activity;
 
-import android.annotation.SuppressLint;
+import static com.trabalho.financecontrol.adapter.OperationAdapter.formatValor;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +27,7 @@ import com.trabalho.financecontrol.model.Operacao;
 import com.trabalho.financecontrol.model.Tipo;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -41,6 +45,7 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
     EditText ValueEditText;
     TextView DateTextView;
     String date;
+    private String current = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +74,31 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
             tipos = tipoDAO.getAllTipos();
         }
         operacaoDAO = new OperacaoDAO(getApplicationContext());
-
         CategoriesSpinner = (Spinner) findViewById(R.id.CategoriesSpinner);
         ValueEditText = findViewById(R.id.ValueEditText);
+        ValueEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            //  Ideia taked from https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    ValueEditText.removeTextChangedListener(this);
+                    String numberString = charSequence.toString().replaceAll("[R$,.]", "");
+                    double parsed = Double.parseDouble(numberString);
+                    String formatted = formatValor((parsed/100));
+                    current = formatted;
+                    ValueEditText.setText(formatted);
+                    ValueEditText.setSelection(formatted.length());
+                    ValueEditText.addTextChangedListener(this);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         DateTextView = findViewById(R.id.DateTextView);
         operacao = new Operacao();
 
@@ -112,7 +139,9 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
                         Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    operacao.setValor(ValueEditText.getText().toString());
+                    String valorS = ValueEditText.getText().toString().replaceAll("[R$,.]", "");
+                    Double valorD = Double.parseDouble(valorS)/100;
+                    operacao.setValor(String.valueOf(valorD));
                     operacaoDAO.insertOperacao(operacao);
                     Toast.makeText(OperationActivity.this, "Operação cadastrada.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);

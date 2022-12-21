@@ -273,10 +273,11 @@ public class OperacaoDAO {
     }
 
     public void deleteAllOperations(){
-        List<Operacao> lista = getAllOperacoes();
-        while (lista.size() > 0) {
-            deleteOperacao(lista.get(0));
-            lista = getAllOperacoes();
+        try {
+            String[] args = {String.valueOf(0)};
+            write.delete(DBHelper.TABLE2_NAME, "id>?", args);
+        } catch (Exception e) {
+            Log.e("INFO", "Erro ao remover as categorias" + e.getMessage());
         }
     }
 }

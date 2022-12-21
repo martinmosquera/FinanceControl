@@ -238,20 +238,29 @@ public class ExampleInstrumentedTest {
         t.setId(idTipo);
         o.setTipo(t);
         o.setValor("20");
-        o.setData(new Date());
+        Date d = null;
+        try {
+            d = new SimpleDateFormat("dd/MM/yyyy").parse("12/01/2022");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        o.setData(d);
         o.setCategoria(Categoria.CREDITO);
         long i = oDAO.insertOperacao(o);
         o.setTipo(t);
         o.setValor("20");
-        o.setData(new Date());
+        o.setData(d);
         o.setCategoria(Categoria.CREDITO);
         i = oDAO.insertOperacao(o);
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy"); //você pode usar outras máscaras
-        Date y2 = new Date(2022, 12, 21);
-        Date y1 = new Date(2022, 12, 19);
-        System.out.println(sdf1.format(y1));
+        Date y2 = null;
+        Date y1 = null;
+        try {
+            y2 = new SimpleDateFormat("dd/MM/yyyy").parse("10/10/2022");
+            y1 = new SimpleDateFormat("dd/MM/yyyy").parse("10/10/2021");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         lista = oDAO.getByDataCategoria(y1, y2, Categoria.CREDITO.getNome());
-        System.out.println("Data retorno do banco: " + sdf1.format(lista.get(0).getData()));
         assertEquals(2, lista.size(), 0);
     }
 
