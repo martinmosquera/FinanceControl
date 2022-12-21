@@ -111,8 +111,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterView.OnI
                         i.putExtra("d1",Date1textView.getText().toString());
                         i.putExtra("d2",Date2textView.getText().toString());
                         String cate= "";
-                        System.out.println("Categoria - "+categoria);
-
                         if(categoria.equalsIgnoreCase("Todas"))
                             cate = "-1";
                         else if(categoria.equalsIgnoreCase("Débito"))

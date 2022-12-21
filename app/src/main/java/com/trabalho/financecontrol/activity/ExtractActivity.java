@@ -1,6 +1,9 @@
 package com.trabalho.financecontrol.activity;
 
+import static com.trabalho.financecontrol.adapter.OperationAdapter.formatValor;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -61,7 +64,12 @@ public class ExtractActivity extends AppCompatActivity {
                 saldo += Double.parseDouble(o.getValor());
         }
         TextView total = findViewById(R.id.totaltextView);
-        total.setText("R$ "+String.valueOf(saldo));
+        total.setText(formatValor(saldo));
+        if(saldo <= 0){
+            total.setTextColor(Color.parseColor("#c73131"));
+        }else{
+            total.setTextColor(Color.parseColor("#53ae5b"));
+        }
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

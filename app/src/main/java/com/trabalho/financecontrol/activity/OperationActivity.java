@@ -34,15 +34,11 @@ import java.util.Objects;
 
 public class OperationActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
     Tipo tipo;
-    private String nome;
-    int ano,mes,dia;
     OperacaoDAO operacaoDAO;
     Operacao operacao;
     Spinner CategoriesSpinner;
     TextView SimpleSpinnerItem;
-
     EditText ValueEditText;
-
     TextView DateTextView;
     String date;
 
@@ -111,7 +107,6 @@ public class OperationActivity extends AppCompatActivity implements DatePickerDi
 
                     try {
                         Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(DateTextView.getText().toString());
-                        System.out.println("Data Armazenada "+dat);
                         operacao.setData(dat);
                     } catch (Exception e) {
                         Toast.makeText(OperationActivity.this, "Selecione uma data válida.", Toast.LENGTH_SHORT).show();

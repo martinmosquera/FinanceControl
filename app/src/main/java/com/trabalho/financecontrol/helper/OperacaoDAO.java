@@ -78,7 +78,7 @@ public class OperacaoDAO {
     public List<Operacao> getAllOperacoes() {
         List<Operacao> lista = new ArrayList<>();
         try{
-            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, null);
+            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "data DESC");
             cursor.moveToFirst();
             while (cursor.moveToNext()) {
                 Operacao operacao = new Operacao();
@@ -228,6 +228,41 @@ public class OperacaoDAO {
                     }
                 }
             }
+        }
+        return lista;
+    }
+
+    public List<Operacao> getAllByCategoria() {
+        List<Operacao> lista = new ArrayList<>();
+        try{
+            Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id", "tipo", "data", "valor", "categoria"}, null, null, null, null, "categoria DESC, data ASC");
+            cursor.moveToFirst();
+            while (cursor.moveToNext()) {
+                Operacao operacao = new Operacao();
+                int indexId = cursor.getColumnIndex("id");
+                int indexTipo = cursor.getColumnIndex("tipo");
+                int indexData = cursor.getColumnIndex("data");
+                int indexValor = cursor.getColumnIndex("valor");
+                int indexCategoria = cursor.getColumnIndex("categoria");
+                Long id = cursor.getLong(indexId);
+                long tipo = cursor.getLong(indexTipo);
+                String data = cursor.getString(indexData);
+                String valor = cursor.getString(indexValor);
+                String categoria = cursor.getString(indexCategoria);
+                operacao.setId(id);
+                TipoDAO tipoDAO = new TipoDAO(context);
+                Tipo t = tipoDAO.getById(tipo);
+                operacao.setTipo(t);
+                Date dat = new SimpleDateFormat("dd/MM/yyyy").parse(data);
+                operacao.setData(dat);
+                operacao.setValor(valor);
+                if (categoria.equalsIgnoreCase("Debito"))
+                    operacao.setCategoria(Categoria.DEBITO);
+                else operacao.setCategoria(Categoria.CREDITO);
+                lista.add(operacao);
+            }
+        }catch (Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return lista;
     }
