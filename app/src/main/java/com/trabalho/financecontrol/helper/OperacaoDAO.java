@@ -180,7 +180,7 @@ public class OperacaoDAO {
             operacao.setData(dat);
             operacao.setValor(valor);
             operacao.setCategoria(t.getCategoria());
-            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) < 0){
+            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) <= 0){
                     lista.add(operacao);
             }
         }
@@ -216,7 +216,7 @@ public class OperacaoDAO {
             }
             operacao.setData(dat);
             operacao.setValor(valor);
-            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) < 0){
+            if(dat.compareTo(d1) >= 0 && dat.compareTo(d2) <= 0){
                     if(cat.equalsIgnoreCase(c)){
                         lista.add(operacao);
                 }
